@@ -1,0 +1,27 @@
+{
+  "reqres": {
+    "validUser": {
+      "email": "eve.holt@reqres.in",
+      "password": "cityslicka"
+    },
+    "invalidUser": {
+      "email": "invalid@reqres.in",
+      "password": "wrongpassword"
+    },
+    "registerUser": {
+      "email": "eve.holt@reqres.in",
+      "password": "pistol"
+    }
+  },
+  "dummyjson": {
+    "validUser": {
+      "username": "kminchelle",
+      "password": "0lelplR"
+    },
+    "invalidUser": {
+      "username": "invalid",
+      "password": "wrongpassword"
+    }
+  }
+}
+

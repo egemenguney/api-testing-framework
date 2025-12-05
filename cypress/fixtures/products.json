@@ -1,0 +1,27 @@
+{
+  "validProduct": {
+    "title": "Test Product",
+    "description": "This is a test product for API testing",
+    "price": 99.99,
+    "category": "electronics",
+    "stock": 100,
+    "brand": "TestBrand",
+    "rating": 4.5
+  },
+  "invalidProduct": {
+    "title": "",
+    "price": -10,
+    "description": null
+  },
+  "updateProduct": {
+    "title": "Updated Product",
+    "price": 149.99,
+    "stock": 50
+  },
+  "searchQuery": {
+    "phone": "phone",
+    "laptop": "laptop",
+    "fragrances": "fragrances"
+  }
+}
+

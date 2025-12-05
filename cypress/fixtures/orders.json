@@ -1,0 +1,35 @@
+{
+  "validOrder": {
+    "title": "New Order",
+    "body": "Order details and description",
+    "userId": 1
+  },
+  "invalidOrder": {
+    "title": "",
+    "body": null,
+    "userId": null
+  },
+  "cartOrder": {
+    "userId": 1,
+    "products": [
+      {
+        "id": 1,
+        "quantity": 2
+      },
+      {
+        "id": 2,
+        "quantity": 1
+      }
+    ]
+  },
+  "updateCart": {
+    "merge": true,
+    "products": [
+      {
+        "id": 1,
+        "quantity": 3
+      }
+    ]
+  }
+}
+

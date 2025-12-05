@@ -1,0 +1,77 @@
+name: API Tests CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x]
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Setup Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Run Cypress tests
+      run: npm run test:report
+      env:
+        API_BASE_URL: ${{ secrets.API_BASE_URL }}
+        API_KEY: ${{ secrets.API_KEY }}
+        AUTH_TOKEN: ${{ secrets.AUTH_TOKEN }}
+
+    - name: Upload test reports
+      uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: test-reports-${{ matrix.node-version }}
+        path: |
+          cypress/reports/
+          cypress/screenshots/
+        retention-days: 30
+
+    - name: Comment PR with test results
+      if: github.event_name == 'pull_request'
+      uses: actions/github-script@v6
+      with:
+        script: |
+          const fs = require('fs');
+          const path = require('path');
+          
+          // Read test results if available
+          const reportPath = path.join('cypress', 'reports', 'mochawesome.json');
+          if (fs.existsSync(reportPath)) {
+            const report = JSON.parse(fs.readFileSync(reportPath, 'utf8'));
+            const stats = report.stats;
+            
+            const comment = `## 🧪 Test Results
+            
+            - ✅ Passed: ${stats.passes}
+            - ❌ Failed: ${stats.failures}
+            - ⏭️ Skipped: ${stats.pending}
+            - ⏱️ Duration: ${stats.duration}ms
+            
+            Node.js Version: ${{ matrix.node-version }}
+            `;
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
+          }
+
